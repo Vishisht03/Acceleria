@@ -7,5 +7,25 @@ export const StudentContext = createContext(null);
 export default function StudentProvider({ children }) {
 
     const [studentViewCoursesList,setStudentViewCoursesList] = useState([]);
-    return <StudentContext.Provider value={{studentViewCoursesList,setStudentViewCoursesList }}>{children}</StudentContext.Provider>;
+    const [loadingState, setLoadingState] = useState(true);
+    const [studentViewCourseDetails, setStudentViewCourseDetails] = useState(null);
+    const [currentCourseDetailsId, setcurrentCourseDetailsId] = useState(null);
+
+    return (
+        <StudentContext.Provider
+            value={{
+                studentViewCoursesList,
+                setStudentViewCoursesList,
+                loadingState,
+                setLoadingState,
+                studentViewCourseDetails,
+                setStudentViewCourseDetails,
+                currentCourseDetailsId,
+                setcurrentCourseDetailsId,
+                
+            }}
+        >
+            {children}
+        </StudentContext.Provider>
+    );
 }

@@ -10,7 +10,7 @@ import { fetchStudentViewCourseListService } from "@/services";
 import { DropdownMenuRadioGroup, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { ArrowUpDownIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function createSearchParamsHelper(filterParams) { 
     const queryParams = [];
@@ -28,9 +28,11 @@ function StudentViewCoursesPage() {
     const [filters, setFilters] = useState({});
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const { studentViewCoursesList, setStudentViewCoursesList } = useContext(StudentContext);
+    const { studentViewCoursesList, setStudentViewCoursesList,
+        loadingState, setLoadingState } = useContext(StudentContext);
     
-
+    const navigate = useNavigate();
+    
 
     function handleFilterOnChange(getSectionId, getCurrentOption) { 
         let cpyFilters = { ...filters };
@@ -60,9 +62,16 @@ function StudentViewCoursesPage() {
 
 
 
-    async function fetchAllStudentViewCourses() {
-        const response = await fetchStudentViewCourseListService();
-        if(response?.success) setStudentViewCoursesList(response?.data);
+    async function fetchAllStudentViewCourses(filters,sort) {
+        const query = new URLSearchParams({
+            ...filters,
+            sortBy: sort
+        })
+        const response = await fetchStudentViewCourseListService(query);
+        if (response?.success) {
+            setStudentViewCoursesList(response?.data);
+            setLoadingState(false);
+        }
     }
 
     useEffect(() => { 
@@ -70,9 +79,23 @@ function StudentViewCoursesPage() {
         setSearchParams(new URLSearchParams(buildQueryStringForFilters));
     },[filters])
 
+
     useEffect(() => {
-        fetchAllStudentViewCourses();
-    }, []);
+        setSort('title-atoz')
+        setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
+    },[])
+
+    useEffect(() => {
+        if (filters !== null && sort !== null)
+
+        fetchAllStudentViewCourses(filters,sort);
+    }, [filters, sort]);
+    
+    useEffect(() => {
+        return () => {
+            sessionStorage.removeItem("filters");
+        }
+    },[])
 
     console.log(filters);
     
@@ -140,14 +163,14 @@ function StudentViewCoursesPage() {
                             </DropdownMenuContent>
                         </DropdownMenu>
                         <span className="text-sm text-black font-bold">
-                            10 Results
+                            {studentViewCoursesList.length} Results
                         </span>
                     </div>
                     <div className="space-y-4">
                     {studentViewCoursesList && studentViewCoursesList.length > 0 ? (
                     studentViewCoursesList.map((courseItem) => (
                     <Card
-                    // onClick={() => handleCourseNavigate(courseItem?._id)}
+                    onClick={() => navigate(`/course/details/${courseItem?._id}`)}
                     className="cursor-pointer"
                     key={courseItem?._id}
                     >
@@ -178,8 +201,10 @@ function StudentViewCoursesPage() {
                     </div>
                   </CardContent>
                 </Card>
-                    )))
-            :(
+                    ))
+                ) : loadingState ? (
+                    <Skeleton/>
+                    ) : (
               <h1 className="font-extrabold text-4xl">No Courses Found</h1>
             )}
                     </div>
