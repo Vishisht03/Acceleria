@@ -10,7 +10,6 @@ import { useContext, useEffect, useState } from "react";
 
 
 
-
 function InstructorDashboardPage() {
 
     const [activeTab, setActiveTab] = useState('dashboard');
@@ -51,7 +50,11 @@ function InstructorDashboardPage() {
     function handleLogout() {
         resetCredentials();
         sessionStorage.clear();
-    }
+  }
+  
+  console.log(instructorCoursesList, "instructorCoursesList");
+  
+
 
     return (
         <div className="flex h-full min-h-screen bg-gradient-to-r from-blue-500 via-purple-600 to-indigo-500">

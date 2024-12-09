@@ -7,7 +7,8 @@ import { StudentContext } from '@/context/student-context';
 import { fetchStudentViewCourseListService } from '@/services';
 
 function StudentHomePage() {
-    const {studentViewCoursesList,setStudentViewCoursesList} = useContext(StudentContext);
+    
+    const { studentViewCoursesList, setStudentViewCoursesList } = useContext(StudentContext);
     const navigate = useNavigate();
 
     function handleNavigateToCoursesPage(getCurrentId) {
@@ -17,14 +18,20 @@ function StudentHomePage() {
           category: [getCurrentId],
         };
     
-        sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+      sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+      
+      navigate("/courses");
     
-        navigate("/courses");
     }
     async function fetchAllStudentViewCourses() {
         const response = await fetchStudentViewCourseListService();
         if(response?.success) setStudentViewCoursesList(response?.data);
     }
+  
+    async function handleCourseNavigate(getCurrentCourseId) {
+      navigate(`/course/details/${getCurrentCourseId}`)
+    }
+    
     useEffect(() => {
         fetchAllStudentViewCourses();
       }, []);
@@ -38,11 +45,11 @@ function StudentHomePage() {
                     </h1>
                     <p className="text-xl">Skills for your present and your future. Get Started with US</p>
                 </div>
-                <div className="lg:w-full mb-8 lg:mb-0">
+                <div className="lg:w-full mb-8 lg:mb-0 flex justify-center">
                     <img src={banner}
-                        width={600}
-                        height={400}
-                        className="w-full h-auto rounded-lg shadow-lg"
+                        width={550}
+                        height={100}
+                        className="rounded-lg shadow-lg"
                     />
                 </div>
             </section>

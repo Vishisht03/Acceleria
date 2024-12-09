@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import VideoPlayer from "@/components/video-player";
 import { StudentContext } from "@/context/student-context";
 import { fetchStudentViewCourseDetailsService } from "@/services";
-import { CheckCircle, Globe, Lock, PlayCircle } from "lucide-react";
-import { useContext, useEffect } from "react";
+import { CheckCircle, Globe,PlayCircle } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 
@@ -17,8 +18,11 @@ function StudentViewCourseDetailsPage() {
         setcurrentCourseDetailsId,
         loadingState,
         setLoadingState,
-    } = useContext(StudentContext);
-    const { id } = useParams();
+  } = useContext(StudentContext);
+  const [displayCurrentVideoFreePreview, setDisplayCurrentVideoFreePreview] = useState(null);
+  const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false);
+  const { id } = useParams();
+  // const location = useLocation();
     
     async function fetchStudentViewCourseDetails() {
         const response = await fetchStudentViewCourseDetailsService(currentCourseDetailsId);
@@ -30,7 +34,19 @@ function StudentViewCourseDetailsPage() {
             setStudentViewCourseDetails(null);
             setLoadingState(false);
         }
+  }
+  
+  function handleSetFreePreview(getCurrentVideoInfo) { 
+    console.log(getCurrentVideoInfo, "getCurrentVideoInfo");
+    setDisplayCurrentVideoFreePreview(getCurrentVideoInfo?.videoUrl);
+    
+  }
+
+  useEffect(() => {
+    if (displayCurrentVideoFreePreview !== null) { 
+      setShowFreePreviewDialog(true);
     }
+  },[displayCurrentVideoFreePreview])
 
     useEffect(() => {
         console.log(currentCourseDetailsId, "currentCourseDetailsId");
@@ -44,6 +60,13 @@ function StudentViewCourseDetailsPage() {
             setcurrentCourseDetailsId(id);
         }
     }, [id])
+  
+  // useEffect(() => {
+  //   if (!location.pathname.includes("course-details")) { 
+  //     setStudentViewCourseDetails(null);
+  //     setcurrentCourseDetailsId(null);
+  //   }
+    // },[location.pathname])
     
     if (loadingState) {
         return <Skeleton />;
@@ -108,7 +131,6 @@ function StudentViewCourseDetailsPage() {
                   <li
                     className="cursor-pointer flex items-center mb-4"
                     onClick={ () => handleSetFreePreview(curriculumItem)
-     
                     }  
                       >
                           {/* changes */}
@@ -138,7 +160,47 @@ function StudentViewCourseDetailsPage() {
           </Card>
         </aside>  
         </div >
-
+        <Dialog
+        open={showFreePreviewDialog}
+        onOpenChange={() => {
+          setShowFreePreviewDialog(false);
+          setDisplayCurrentVideoFreePreview(null);
+        }}
+      >
+        <DialogContent className="w-[800px]">
+          <DialogHeader>
+            <DialogTitle>Lecture</DialogTitle>
+          </DialogHeader>
+          <div className="aspect-video mb-4 rounded-lg flex items-center justify-center">
+                <VideoPlayer
+                  url={
+                      displayCurrentVideoFreePreview
+                  }
+                  width="450px"
+                  height="200px"
+                />
+              </div>
+          {/* <div className="flex flex-col gap-2">
+            {studentViewCourseDetails?.curriculum
+              ?.filter((item) => item.freePreview)
+              .map((filteredItem) => (
+                <p
+                  onClick={() => handleSetFreePreview(filteredItem)}
+                  className="cursor-pointer text-[16px] font-medium"
+                >
+                  {filteredItem?.title}
+                </p>
+              ))}
+          </div> */}
+          <DialogFooter className="sm:justify-start">
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Close
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
         </div> 
     );
 }
