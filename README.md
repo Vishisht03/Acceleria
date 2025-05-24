@@ -1,2 +1,1 @@
-"# Acceleria-LMS" 
-"# Acceleria-LMS" 
+"# Acceleria" 
