@@ -10,6 +10,12 @@ import NotFoundPage from "./pages/not-found";
 import AddNewCoursePage from "./pages/instructor/add-new-course";
 import StudentViewCoursesPage from "./pages/student/courses";
 import StudentViewCourseDetailsPage from "./pages/student/course-details";
+import Main from "./components/Quiz/main";
+import QuizPage from "./components/Quiz/quiz";
+import ResultPage from "./components/Quiz/result";
+import AssistantPage from "./pages/AssistantPage";
+
+
 function App() {
   
 
@@ -56,6 +62,7 @@ function App() {
           />
         }
       />
+      
       <Route path="/"
         element={ 
           <RouteGuard
@@ -72,7 +79,17 @@ function App() {
 
       </Route>
       <Route path="*" element={<NotFoundPage />} />
+      <Route path="/quiz" element={<QuizPage />} />
+      <Route path="/main" element={<Main />} />
+      <Route path="/result" element={<ResultPage />} />
+
+      <Route
+    path="/assistant"
+    element={<AssistantPage />}
+/>
+
     </Routes>
+    
   )
 }
 

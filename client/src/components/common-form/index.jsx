@@ -1,4 +1,5 @@
 // import PropTypes from 'prop-types';
+// import { GraduationCap, BookOpen } from "lucide-react";
 import { Button } from "../ui/button";
 import FormControls from "./form-controls";
 
@@ -18,6 +19,7 @@ function CommonForm({
                 formData={formData}
                 setFormData={setFormData}
             />
+            
             <Button disabled={isButtonDisabled} type="submit" className="mt-5 w-full">{buttonText || "Submit"}</Button>
         </form>
     );

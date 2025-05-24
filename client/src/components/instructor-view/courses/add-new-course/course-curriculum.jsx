@@ -236,14 +236,14 @@ function CourseCurriculum() {
                                 onChange={(event) => handleCourseTitleChange(event, index)}
                                 value={courseCurriculumFormData[index]?.title} 
                                 />
-                                <div className="flex items-center space-x-2">
+                                {/* <div className="flex items-center space-x-2">
                                     <Switch
                                         onCheckedChange={(value)=>handleFreePreviewChange(value,index)}
                                         checked={courseCurriculumFormData[index]?.freePreview}
                                         id={`freePreview-${index+1}`}
                                     />
                                     <Label htmlFor={'freePreview-${index+1}'}> Free Preview</Label>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="mt-6">
                                 {

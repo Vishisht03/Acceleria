@@ -100,117 +100,124 @@ function StudentViewCoursesPage() {
     console.log(filters);
     
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-3xl font-bold mb-4">
-            All Courses
-            </h1>
-            <div className="flex flex-col md:flex-row gap-4">
-                <aside className="w-full md:w-64 space-y-4">
-                    <div>
-                        {
-                            Object.keys(filterOptions).map((keyItem) => (
-                                <div className="p-4 border-b">
-                                    <h3 className="font-bold mb-3">{keyItem.toUpperCase()}</h3>
-                                    <div className="grid gap-2 mt-2">
-                                        {
-                                            filterOptions[keyItem].map((option) => (
-                                                <Label className="flex font-medium items-center gap-3" key={keyItem+option.id}>
-                                                    <Checkbox
-                                                        checked={
-                                                    filters &&
-                                                    Object.keys(filters).length > 0 &&
-                                                    filters[keyItem] &&
-                                                    filters[keyItem].indexOf(option.id) > -1
-                                                    }
-                                                    onCheckedChange={() =>
-                                                    handleFilterOnChange(keyItem, option)
-                                                    }
-                                                    />
-                                                    {option.label}
-                                                </Label>
-                                            ))
-                                        }
-                                    </div>
-                                </div>
-                            ))
-                                
-                        }
-                    </div>
-                </aside>
-                <main className="flex-1">
-                    <div className="flex justify-end items-center mb-4 gap-5">
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="flex items-center gap-2 p-5">
-                                    <ArrowUpDownIcon className="h-4 w-4" />
-                                    <span className="text-[16px] font-medium">Sort By</span>
-                            </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align ="end" className="w-[200px]">
-                                <DropdownMenuRadioGroup value={sort} onValueChange={(value)=>setSort(value)}>
-                                {sortOptions.map((sortItem) => (
-                                    <DropdownMenuRadioItem
-                                    value={sortItem.id}
-                                    key={sortItem.id}
-                                    >
-                                    {sortItem.label}
-                                    </DropdownMenuRadioItem>
-                                    ))}
-                                </DropdownMenuRadioGroup>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                        <span className="text-sm text-black font-bold">
-                            {studentViewCoursesList.length} Results
-                        </span>
-                    </div>
-                    <div className="space-y-4">
-                    {studentViewCoursesList && studentViewCoursesList.length > 0 ? (
-                    studentViewCoursesList.map((courseItem) => (
-                    <Card
-                    onClick={() => navigate(`/course/details/${courseItem?._id}`)}
-                    className="cursor-pointer"
-                    key={courseItem?._id}
-                    >
-                    <CardContent className="flex gap-4 p-4">
-                    <div className="w-48 h-32 flex-shrink-0">
-                      <img
-                        src={courseItem?.image}
-                        className="w-ful h-full object-cover"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <CardTitle className="text-xl mb-2">
-                        {courseItem?.title}
-                      </CardTitle>
-                      <p className="text-sm text-gray-600 mb-1">
-                        Created By{" "}
-                        <span className="font-bold">
-                          {courseItem?.instructorName}
-                        </span>
-                      </p>
-                      <p className="text-[16px] text-gray-600 mt-3 mb-2">
-                        {`${courseItem?.curriculum?.length} ${
-                          courseItem?.curriculum?.length <= 1
-                            ? "Lecture"
-                            : "Lectures"
-                        } - ${courseItem?.level.toUpperCase()} Level`}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-                    ))
-                ) : loadingState ? (
-                    <Skeleton/>
-                    ) : (
-              <h1 className="font-extrabold text-4xl">No Courses Found</h1>
-            )}
-                    </div>
-                </main>
+        <div className="container mx-auto p-6 bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+  {/* Page Title */}
+  <h1 className="text-4xl font-extrabold mb-8 text-gray-900 dark:text-white">
+    All Courses
+  </h1>
+
+  {/* Layout: Sidebar and Main Content */}
+  <div className="flex flex-col md:flex-row gap-6">
+    {/* Sidebar */}
+    <aside className="w-full md:w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
+      <h2 className="text-2xl font-bold mb-6 text-gray-700 dark:text-white">
+        Filters
+      </h2>
+      <div className="space-y-6">
+        {Object.keys(filterOptions).map((keyItem) => (
+          <div className="border-b pb-4" key={keyItem}>
+            <h3 className="text-lg font-semibold mb-3 text-gray-800 dark:text-gray-200">
+              {keyItem.toUpperCase()}
+            </h3>
+            <div className="grid gap-2">
+              {filterOptions[keyItem].map((option) => (
+                <label
+                  className="flex items-center gap-3 font-medium text-gray-700 dark:text-gray-300"
+                  key={`${keyItem}${option.id}`}
+                >
+                  <Checkbox
+                    checked={
+                      filters &&
+                      Object.keys(filters).length > 0 &&
+                      filters[keyItem] &&
+                      filters[keyItem].indexOf(option.id) > -1
+                    }
+                    onCheckedChange={() => handleFilterOnChange(keyItem, option)}
+                  />
+                  {option.label}
+                </label>
+              ))}
             </div>
-        </div>
+          </div>
+        ))}
+      </div>
+    </aside>
+
+    {/* Main Content */}
+    <main className="flex-1">
+      {/* Sorting and Results Count */}
+      <div className="flex justify-between items-center mb-6">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2 p-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md"
+            >
+              <ArrowUpDownIcon className="h-5 w-5" />
+              <span className="font-medium">Sort By</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-[200px] bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+            <DropdownMenuRadioGroup value={sort} onValueChange={(value) => setSort(value)}>
+              {sortOptions.map((sortItem) => (
+                <DropdownMenuRadioItem
+                  value={sortItem.id}
+                  key={sortItem.id}
+                  className="text-gray-800 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  {sortItem.label}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <span className="text-lg font-semibold">
+          {studentViewCoursesList.length} Results
+        </span>
+      </div>
+
+      {/* Courses Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {studentViewCoursesList && studentViewCoursesList.length > 0 ? (
+          studentViewCoursesList.map((courseItem) => (
+            <div
+              onClick={() => navigate(`/course/details/${courseItem?._id}`)}
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-transform transform hover:scale-105 cursor-pointer"
+              key={courseItem?._id}
+            >
+              <img
+                src={courseItem?.image}
+                alt={courseItem?.title}
+                className="w-full h-40 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
+                  {courseItem?.title}
+                </h3>
+                <p className="text-sm text-gray-700 dark:text-gray-400">
+                  Created by <span className="font-semibold">{courseItem?.instructorName}</span>
+                </p>
+                <p className="text-sm text-gray-700 dark:text-gray-400 mt-3">
+                  {`${courseItem?.curriculum?.length} ${
+                    courseItem?.curriculum?.length <= 1 ? "Lecture" : "Lectures"
+                  } - ${courseItem?.level.toUpperCase()} Level`}
+                </p>
+              </div>
+            </div>
+          ))
+        ) : loadingState ? (
+          <Skeleton />
+        ) : (
+          <h1 className="col-span-full text-3xl font-bold text-center text-gray-500 dark:text-gray-400">
+            No Courses Found
+          </h1>
+        )}
+      </div>
+    </main>
+  </div>
+</div>
+
     )
 }
 export default StudentViewCoursesPage;

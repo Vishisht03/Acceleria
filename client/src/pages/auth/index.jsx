@@ -45,65 +45,54 @@ function AuthPage() {
       signUpFormData.password !== ""
     );
   }
+  console.log(signUpFormData);
 
   return (
-    <div className="relative flex flex-col min-h-screen">
-      {/* Animated Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-teal-500 to-indigo-600 animate-gradient-move"></div>
+    <div className="relative flex flex-col min-h-screen overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-indigo-500 to-blue-500 animate-gradient-move"></div>
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-md"></div>
 
-      {/* Overlay for Better Contrast */}
-      <div className="absolute inset-0 bg-black/60"></div>
-
-      {/* Header */}
-      <header className="px-4 lg:px-6 h-14 flex items-center z-20 relative">
-        <Link
-          to={"/"}
-          className="flex items-center justify-center hover:opacity-90 transition-opacity duration-300"
-        >
-          <GraduationCap className="h-8 w-8 mr-4 text-white animate-pulse" />
-          <span className="font-extrabold text-xl text-white hover:text-indigo-200 transition-colors duration-300">
+      <header className="px-6 lg:px-10 h-16 flex items-center z-20 relative">
+        <Link to="/" className="flex items-center hover:opacity-90 transition-opacity duration-300">
+          <GraduationCap className="h-10 w-10 mr-4 text-white animate-bounce" />
+          <span className="font-extrabold text-2xl text-white hover:text-indigo-200 transition-colors duration-300">
             ACCELERIA
           </span>
         </Link>
       </header>
 
-      {/* Authentication Section */}
-      <div className="relative z-20 flex items-center justify-center min-h-screen">
+      <div className="relative z-20 flex items-center justify-center min-h-screen px-4">
         <Tabs
           value={activeTab}
           defaultValue="signin"
           onValueChange={handleTabChange}
-          className="w-full max-w-md"
+          className="w-full max-w-md bg-white/80 rounded-2xl p-6 shadow-2xl backdrop-blur-lg border border-white/20"
         >
-          <TabsList className="grid w-full grid-cols-2 bg-white/10 p-1 rounded-xl backdrop-blur">
+          <TabsList className="grid w-full grid-cols-2 bg-gradient-to-r from-indigo-400 to-purple-500 p-1 rounded-xl shadow-md">
             <TabsTrigger
               value="signin"
-              className="transition-all duration-300 hover:scale-105 focus:ring focus:ring-indigo-300"
+              className="transition-all duration-300 hover:scale-105 text-white font-semibold"
             >
               Sign In
             </TabsTrigger>
             <TabsTrigger
               value="signup"
-              className="transition-all duration-300 hover:scale-105 focus:ring focus:ring-indigo-300"
+              className="transition-all duration-300 hover:scale-105 text-white font-semibold"
             >
               Sign Up
             </TabsTrigger>
           </TabsList>
           <TabsContent value="signin">
             {activeTab === "signin" && (
-              <Card className="p-6 space-y-4 bg-white/80 backdrop-blur-lg animate-fade-in-up">
+              <Card className="p-6 space-y-4 bg-white/90 rounded-xl shadow-lg animate-fade-in-up border border-gray-200">
                 <CardHeader>
-                  <CardTitle className="text-indigo-600">
-                    Sign In To Your Account
-                  </CardTitle>
-                  <CardDescription>
-                    Enter your email and password to sign in to your account.
-                  </CardDescription>
+                  <CardTitle className="text-indigo-600 text-lg font-bold">Sign In To Your Account</CardTitle>
+                  <CardDescription className="text-gray-600">Enter your email and password to sign in.</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-2">
+                <CardContent className="space-y-4">
                   <CommonForm
                     formControls={signInFormControls}
-                    buttonText={"Sign In"}
+                    buttonText="Sign In"
                     formData={signInFormData}
                     setFormData={setSignInFormData}
                     isButtonDisabled={!checkIfSignInFormIsValid()}
@@ -115,24 +104,21 @@ function AuthPage() {
           </TabsContent>
           <TabsContent value="signup">
             {activeTab === "signup" && (
-              <Card className="p-6 space-y-4 bg-white/80 backdrop-blur-lg animate-fade-in-up">
+              <Card className="p-6 space-y-4 bg-white/90 rounded-xl shadow-lg animate-fade-in-up border border-gray-200">
                 <CardHeader>
-                  <CardTitle className="text-indigo-600">
-                    Create a New Account
-                  </CardTitle>
-                  <CardDescription>
-                    Enter your details to get started.
-                  </CardDescription>
+                  <CardTitle className="text-indigo-600 text-lg font-bold">Create a New Account</CardTitle>
+                  <CardDescription className="text-gray-600">Enter your details to get started.</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-2">
+                <CardContent className="space-y-4">
                   <CommonForm
                     formControls={signUpFormControls}
-                    buttonText={"Sign Up"}
+                    buttonText="Sign Up"
                     formData={signUpFormData}
                     setFormData={setSignUpFormData}
                     isButtonDisabled={!checkIfSignUpFormIsValid()}
                     handleSubmit={handleRegisterUser}
                   />
+                  
                 </CardContent>
               </Card>
             )}

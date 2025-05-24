@@ -74,7 +74,7 @@ function AddNewCoursePage() {
       setCourseLandingFormData(courseLandingInitialFormData);
       setCourseCurriculumFormData(courseCurriculumInitialFormData);
       navigate(-1);
-      setCurrentEditedCourseId = null;
+      setCurrentEditedCourseId(null);
     }
     console.log(courseFinalFormData, "courseFinalFormData");
   }

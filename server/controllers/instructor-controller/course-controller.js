@@ -50,6 +50,7 @@ const getCourseDetailsByID = async (req, res) => {
             return res.status(404).json({
                 success: false,
                 message: 'Course not found',
+                data:null
             });
         }
         res.status(200).json({
@@ -59,10 +60,7 @@ const getCourseDetailsByID = async (req, res) => {
     }
     catch (e) {
         console.log(e);
-        res.status(500).json({
-            success: false,
-            message: 'Error adding new course',
-        });
+        res.status(500).json({ message: "Internal server error" });
     }
 }
 
