@@ -22,7 +22,7 @@ function AssistantPage() {
 
     try {
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyDvupRZgF_7x1xjN1UdgedeE-9vkabyRE0`,
         {
           method: "POST",
           headers: {
